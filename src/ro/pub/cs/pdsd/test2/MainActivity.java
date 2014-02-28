@@ -14,19 +14,30 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 
 	int nrun = 0; 
+	int pid; 
+	
+	TextView tv0; 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Log.println (Log.DEBUG, "exe", "on create");
-		if(savedInstanceState == null) 
-			Log.println (Log.DEBUG, "exe", "create new");
-		else
-			Log.println (Log.DEBUG, "exe", "create old");
-		//EditText editText = (EditText)findViewById(R.id.editText1);
-		//state.putString("editText1", editText.getText());
-
-		setContentView(R.layout.activity_main);
+	protected void onCreate(Bundle bundle) {
 		System.out.println ("aceasta este un mesaj catre consola standard");
+		super.onCreate(bundle);
+		tv0 = (TextView)findViewById(R.id.textView0);
+		pid = android.os.Process.myPid();
+		if(tv0 != null)
+			tv0.append (" PID:" + pid);
+		setContentView(R.layout.activity_main);
+		
+		EditText editText = (EditText)findViewById(R.id.editText1);
+	    if (bundle != null) { 
+//	    	if (bundle.getCharSequence("editText1") != null)
+	    	if (bundle.getString("editText1") != null) 
+	    		editText.setText(bundle.getString("editText1"));
+	        Log.println (Log.DEBUG, "exe", "create old");
+	    } else  
+	    	Log.println (Log.DEBUG, "exe", "create new");
+	    
+		
+		
 	}
 
 	@Override
@@ -40,7 +51,9 @@ public class MainActivity extends Activity {
      
 	public void apasa(View v)
     {
-    	Toast.makeText(this, "Hello!", Toast.LENGTH_SHORT).show();
+		
+		
+    	Toast.makeText(this, "Hello, I am PID "+pid, Toast.LENGTH_SHORT).show();
     	TextView textView = (TextView)findViewById(R.id.textView1);
     	EditText editText = (EditText)findViewById(R.id.editText1);
     	textView.setText(getResources().getString(R.string.hello)+editText.getText());
@@ -101,15 +114,23 @@ public class MainActivity extends Activity {
 	        // apelarea functiei din activitatea parinte este recomandata, dar nu obligatorie
 	    	super.onSaveInstanceState(outState);
 	    	Log.println (Log.DEBUG, "exe", "on saveinstance state");
+	    	
+	    	EditText editText = (EditText)findViewById(R.id.editText1);
+			outState.putString("editText1", editText.getText().toString());
 	    }
-	 
+	  
 	    @Override
-	    public void onRestoreInstanceState (Bundle inState)
+	    public void onRestoreInstanceState (Bundle bundle)
 	    {
 	        // apelarea functiei din activitatea parinte este recomandata, dar nu obligatorie
-	    	super.onRestoreInstanceState(inState);
-	    	Log.println (Log.DEBUG, "exe", "on restoreinstancestate");
+	    	Log.println (Log.DEBUG, "exe", "on restoreinstancestate");	 
+	    	super.onRestoreInstanceState(bundle);	
+	    	 EditText editText = (EditText)findViewById(R.id.editText1);	
+	    	 if (bundle.getString("editText1") != null) {	
+	    	        editText.setText(bundle.getString("editText1"));	
+	    	    }	
+	    	 	
+	    	
 	    }
-
 	
 }
