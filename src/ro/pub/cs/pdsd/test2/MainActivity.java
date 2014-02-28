@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
     	EditText editText = (EditText)findViewById(R.id.editText1);
     	textView.setText(getResources().getString(R.string.hello)+editText.getText());
     	editText.setText("");
-
+ 
     	nrun++; 
     	Log.println (Log.DEBUG, "exe", "pressed " + nrun + " times");
     }
